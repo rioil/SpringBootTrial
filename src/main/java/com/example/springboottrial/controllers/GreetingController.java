@@ -1,5 +1,7 @@
-package com.example.springboottrial;
+package com.example.springboottrial.controllers;
 
+import com.example.springboottrial.data.Greeting;
+import com.example.springboottrial.configurations.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,7 @@ public class GreetingController {
     public Greeting greeting(@RequestParam(name = "name", defaultValue = "World") String name) {
         String message;
         // MEMO: Objects.equalsを使うと両方nullでも大丈夫
-        if (userService.findAll().stream().anyMatch(user -> Objects.equals(user.getName(), name))) {
+        if (userService.findAll().stream().anyMatch(user -> Objects.equals(user.getDisplayName(), name))) {
             message = String.format(welcomeTemplate, name);
         }
         else {

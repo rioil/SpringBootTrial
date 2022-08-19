@@ -1,4 +1,4 @@
-package com.example.springboottrial;
+package com.example.springboottrial.configurations;
 
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;

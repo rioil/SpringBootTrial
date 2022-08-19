@@ -1,4 +1,4 @@
-package com.example.springboottrial;
+package com.example.springboottrial.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
@@ -21,7 +21,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> {
             // /greeting 以下は認証不要にする
             try {
-                auth.mvcMatchers("/greeting/**").permitAll()
+                auth.mvcMatchers("/greeting/**", "/users", "/login").permitAll()
                         .anyRequest().authenticated()
                         .and()
                         .addFilter(createMyPreAuthenticatedProcessingFilter())
@@ -32,6 +32,9 @@ public class SecurityConfiguration {
                 throw new RuntimeException(e);
             }
         });
+
+        // MEMO: CSRFを切らないとPOSTリクエストがすべて403になる
+        http.csrf().disable();
 
         return http.build();
     }

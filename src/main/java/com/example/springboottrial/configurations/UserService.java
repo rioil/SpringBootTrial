@@ -1,5 +1,6 @@
-package com.example.springboottrial;
+package com.example.springboottrial.configurations;
 
+import com.example.springboottrial.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

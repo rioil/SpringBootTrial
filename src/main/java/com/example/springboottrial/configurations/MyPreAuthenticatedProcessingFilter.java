@@ -1,4 +1,4 @@
-package com.example.springboottrial;
+package com.example.springboottrial.configurations;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;

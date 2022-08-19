@@ -1,17 +1,18 @@
-package com.example.springboottrial;
+package com.example.springboottrial.data;
 
 public class User {
     private long id;
-    private String name;
+    private String userid;
+    private String displayName;
     private String passwordHash;
 
     // MEMO: ORMにはデフォルトコンストラクタが必要，setterも必要
     public User() {
     }
 
-    public User(long id, String name, String passwordHash) {
-        this.id = id;
-        this.name = name;
+    public User(String userid, String displayName, String passwordHash) {
+        this.userid = userid;
+        this.displayName = displayName;
         this.passwordHash = passwordHash;
     }
 
@@ -23,12 +24,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUserid() {
+        return this.userid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getPasswordHash() {
