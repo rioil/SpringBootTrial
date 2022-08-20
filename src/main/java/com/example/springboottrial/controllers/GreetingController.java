@@ -1,13 +1,12 @@
 package com.example.springboottrial.controllers;
 
 import com.example.springboottrial.data.Greeting;
-import com.example.springboottrial.configurations.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -16,19 +15,16 @@ public class GreetingController {
     private final String denyTemplate = "Bye, %s.";
     private final AtomicLong counter = new AtomicLong();
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(name = "name", defaultValue = "World") String name) {
-        String message;
-        // MEMO: Objects.equalsを使うと両方nullでも大丈夫
-        if (userService.findAll().stream().anyMatch(user -> Objects.equals(user.getDisplayName(), name))) {
-            message = String.format(welcomeTemplate, name);
+    //public Greeting greeting(@RequestParam(name = "name", defaultValue = "World") String name) {
+    public Greeting greeting() {
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!(principal instanceof UserDetails)){
+            throw new RequestRejectedException("Invalid User.");
         }
-        else {
-            message = String.format(denyTemplate, name);
-        }
+
+        String username = ((UserDetails)principal).getUsername();
+        String message = String.format(welcomeTemplate, username);
 
         // MEMO: オブジェクトを返すと自動的にJSONにシリアライズしてくれる(Spring BootとJackson)
         return new Greeting(counter.incrementAndGet(), message);

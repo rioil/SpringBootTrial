@@ -19,9 +19,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
-            // /greeting 以下は認証不要にする
             try {
-                auth.mvcMatchers("/greeting/**", "/users", "/login").permitAll()
+                auth.mvcMatchers("/users", "/login").permitAll()
                         .anyRequest().authenticated()
                         .and()
                         .addFilter(createMyPreAuthenticatedProcessingFilter())
@@ -35,6 +34,9 @@ public class SecurityConfiguration {
 
         // MEMO: CSRFを切らないとPOSTリクエストがすべて403になる
         http.csrf().disable();
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(new MyAuthenticationEntryPoint());
 
         return http.build();
     }

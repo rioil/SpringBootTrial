@@ -1,4 +1,4 @@
-package com.example.springboottrial.configurations;
+package com.example.springboottrial.services;
 
 import com.example.springboottrial.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,27 @@ public class UserService {
     }
 
     public void Save(User user){
+        // TODO userid重複時のエラー処理
         var param = new BeanPropertySqlParameterSource(user);
         var insert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
         Number key = insert.executeAndReturnKey(param);
         user.setId(key.longValue());
+    }
+
+    public boolean exists(String userid){
+        String query = "SELECT count(*) AS num FROM users WHERE userid = ?;";
+
+        var count = jdbcTemplate.queryForObject(query, long.class, userid);
+
+        return count == 1;
+    }
+
+    public User find(String userid){
+        // TODO 見つからなかったときの例外処理
+        String query = "SELECT * FROM users WHERE userid = ?;";
+
+        return jdbcTemplate.queryForObject(query, new BeanPropertyRowMapper<>(User.class), userid);
     }
 }
